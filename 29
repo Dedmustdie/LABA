@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+//ВВОД ДАННЫХ В ФАИЛ
+	ofstream in("INPUT.TXT");
+	int n;
+	int platheight;
+	cout << "Введите количество платформ: ";
+	cin >> n;
+	in << n << "\n";
+	if (n > 0 && n < 30001)
+	{
+		for (size_t i = 1; i < n + 1; i++)
+		{
+			cout << "Введите высоту " << i << " платформы: ";
+			cin >> platheight;
+			in << platheight << " ";
+		}
+	}
+	in.close();
+
+//ОБРАБОТКА ДАННЫХ ИЗ ФАИЛА
+	ifstream inin("INPUT.TXT");
+	int s, h1, h2, h3, E = 0, i;
+	n = 0;
+	platheight = 0;
+	inin >> n;
+	
+	if (n > 2)
+	{
+		inin >> h1;
+		inin >> h2;
+		inin >> h3;
+		for (size_t i = 0; i < n; i++)
+		{
+			if ((abs(h2 - h1) + abs(h3 - h1) < 3 * abs(h3 - h1)))
+			{
+				E = E + abs(h2 - h1);
+				h1 = h2;
+				h2 = h3;
+				inin >> h3;
+			}
+			else
+			{
+				E = E + 3 * abs(h3 - h1);
+				h1 = h3;
+				inin >> h2;
+				inin >> h3;
+				i++;
+			}
+		}
+		cout << "Энергия: " << E << endl;
+	}
+	else
+	{
+		inin >> h1;
+		inin >> h2;
+		E = abs(h2 - h1);
+		cout << "Энергия: " << E << endl;
+	}
+
+//ВЫВОД ОТВЕТА
+	ofstream out("OUTPUT.TXT");
+	out << E;
+	out.close();
+	return 0;
+}
