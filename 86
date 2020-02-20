@@ -1,0 +1,91 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	ifstream inin("INPUT.TXT");
+	int n, tm, th, t2m, t2h, t3h, t3m, t3m2 = INT_MAX;
+	string data, name, name2, tmin, thour, t2min, t2hour, s;
+
+	inin >> n;
+	for (size_t i = 0; i < n; i++)
+	{
+	//ОТЧИСТКА СТРОК
+		name.clear();
+		tmin.clear();
+		t2min.clear();
+		thour.clear();
+		t2hour.clear();
+	//ВЫВОД ДАННЫХ ИЗ ФАИЛА В СТРОКИ
+		inin >> name; //НАЗВАНИЕ ПОЕЗДА
+		if (!(isalnum(name[name.length() - 1]))) //ЕСЛИ ПОСЛЕДНИЙ СИМВОЛ СЛОВА НЕ БУКВА И НЕ ЦИФРА
+		{
+		}
+		else
+		{
+			do
+			{
+				inin >> s;
+				name = name + " ";
+				name = name + s;
+			} while (isalnum(name[name.length() - 1])); //ЗАПИСЫВАЕМ В name СЛОВА,
+			//ПОКА НЕ НАТКНЕМСЯ НА КАВЫЧКИ(КОТОРЫЕ ЯВЛЯЮТСЯ НЕ БУКВОЙ И НЕ ЦИФРОЙ)
+		}
+		inin >> thour; //РАЗДЕЛЯЕМ ЗАПИСЬ(ОТПРАВЛЕНИЯ) ЧЧ:ММ, НА ЧАСЫ И МИНУТЫ
+		tmin = tmin + thour.at(3) + thour.at(4);
+		thour.erase(2, 3);
+
+		inin >> t2hour;//РАЗДЕЛЯЕМ ЗАПИСЬ(ПРИБЫТИЯ) ЧЧ:ММ, НА ЧАСЫ И МИНУТЫ
+		t2min = t2min + t2hour.at(3) + t2hour.at(4);
+		t2hour.erase(2, 3);
+
+		th = atoi(thour.c_str()); //int ЧАСЫ ОТПРАВЛЕНИЯ 
+		tm = atoi(tmin.c_str()); //int МИНУТЫ ОТПРАВЛЕНИЯ 
+		t2h = atoi(t2hour.c_str()); //int ЧАСЫ ПРИБЫТИЯ
+		t2m = atoi(t2min.c_str()); //int МИНУТЫ ПРИБЫТИЯ
+
+		if (th > t2h)
+		{
+			t3h = (24 - th) + t2h;
+			t3m = t3h * 60 + t2m - tm;
+		}
+		else if (th < t2h)
+		{
+			t3h = t2h - th;
+			t3m = t3h * 60 + t2m - tm;
+		}
+		else if (th == t2h && tm == t2m)
+		{
+			t3m = 1440;
+		}
+		else if(th == t2h)
+		{
+			t3m = t2m - tm;
+		}
+		
+		
+		if (t3m < t3m2)//СРАВНИВАЕМ ВРЕМЯ В МИНУТАХ
+		{
+			name2 = name;
+			t3m2 = t3m;
+		}
+	}
+	cout << name2 << "\t" << t3m2 << endl;
+	inin.close();
+//ВЫВОД ОТВЕТА
+
+	ofstream out("OUTPUT.TXT");
+	double kmh;
+	int kmh2;
+	kmh = 650.0 / t3m2 * 60;
+	cout << kmh << endl;
+	kmh2 = round(kmh);
+	cout << kmh2 << endl;
+	out << "The fastest train is " << name2 << ".\n";
+	out << "Its speed is " << kmh2 << " km/h, approximately.";
+	out.close();
+}
