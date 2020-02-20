@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+	ifstream inin("INPUT.TXT");
+	ofstream out("OUTPUT.TXT");
+	string n;
+	int s = 0;
+	inin >> n;
+	for (size_t i = 0; i < n.length(); i++)
+	{
+		if (n[i] == '0')
+		{
+			s = 1;
+		}
+	}
+	if (s == 0)
+	{
+		out << "YES";
+	}
+	else
+	{
+		out << "NO";
+	}
+	inin.close();
+	out.close();
+}
