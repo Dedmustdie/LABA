@@ -1,0 +1,25 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+  setlocale(LC_ALL, "ru");
+
+	ifstream inin("INPUT.TXT");
+	ofstream out("OUTPUT.TXT");
+	int N;
+	inin >> N;
+		if (N % 2 == 0)
+		{
+			out << N / 2;
+		}
+		if (N % 2 != 0)
+		{
+			out << N;
+		}
+	inin.close();
+	out.close();
+}
