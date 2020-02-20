@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+//ВВОД ДАННЫХ В ФАИЛ
+	ofstream in("INPUT.TXT");
+	int n, k;
+	cout << "Введите числа n и k: ";
+	cin >> n >> k;
+	if ((1 <= n && n <= pow(10, 9)) && (2 <= k && k <= 10))
+	{
+			in << n << " " << k;
+	}
+	in.close();
+
+//ОБРАБОТКА ДАННЫХ ИЗ ФАИЛА
+	ifstream inin("INPUT.TXT");
+	string data;
+	int a, b, sum = 0, mult = 1;
+	
+	inin >> n;
+	inin >> k;
+	a = n;
+	while (a > k)
+	{
+		b = a % k;
+		a = a / k;
+		mult = mult * b;
+		sum = sum + b;
+	} 
+	mult = mult * a;
+	sum = sum + a;
+	a = mult - sum;
+	cout << a;
+//ВЫВОД ОТВЕТА
+
+	ofstream out("OUTPUT.TXT");
+	out << a;
+	out.close();
+	return 0;
+}
